@@ -2,8 +2,7 @@
 
 ## 1. Initial Entities
 
-The initial version of the movie ticket booking database contains six
-core entities.
+The initial version of the movie ticket booking database contains six core entities.
 
 ### 1.1 User
 
@@ -15,8 +14,7 @@ A user can eventually create multiple bookings.
 
 Represents a movie available for screening.
 
-A movie is independent of a theater because the same movie can be shown
-in multiple theaters.
+A movie is independent of a theater because the same movie can be shown in multiple theaters.
 
 ### 1.3 Theater
 
@@ -28,8 +26,7 @@ A theater can contain multiple screens.
 
 Represents an individual auditorium within a theater.
 
-Each screen belongs to exactly one theater and can have its own seating
-arrangement.
+Each screen belongs to exactly one theater and can have its own seating arrangement.
 
 ### 1.5 Seat
 
@@ -41,27 +38,126 @@ Each seat belongs to exactly one screen.
 
 Represents a scheduled screening of a movie.
 
-A show connects a movie with a screen and specifies when the movie will
-be shown.
+A show connects a movie with a screen and specifies when the movie will be shown.
 
 ## 2. Initial Entity List
 
-| Entity | Description |
-|--------|-------------|
-| User | Person using the application |
-| Movie | Movie being screened |
-| Theater | Physical cinema location |
-| Screen | Auditorium within a theater |
-| Seat | Physical seat within a screen |
-| Show | Scheduled screening of a movie |
+| Entity  | Description                    |
+| ------- | ------------------------------ |
+| User    | Person using the application   |
+| Movie   | Movie being screened           |
+| Theater | Physical cinema location       |
+| Screen  | Auditorium within a theater    |
+| Seat    | Physical seat within a screen  |
+| Show    | Scheduled screening of a movie |
 
 ## 3. Future Entities
 
 The following entities are intentionally not part of the initial design:
 
-- Booking
-- Booking Seat
-- Payment
-- Seat Hold
+* Booking
+* Booking Seat
+* Payment
+* Seat Hold
 
 These will be introduced when the booking workflow is designed.
+
+## 4. Relationships
+
+### 4.1 Theater → Screen
+
+**Relationship:** One-to-Many (1:N)
+
+One theater can contain multiple screens.
+
+Each screen belongs to exactly one theater.
+
+```text
+Theater 1 ─── N Screen
+```
+
+### 4.2 Screen → Seat
+
+**Relationship:** One-to-Many (1:N)
+
+One screen can contain multiple seats.
+
+Each seat belongs to exactly one screen.
+
+```text
+Screen 1 ─── N Seat
+```
+
+### 4.3 Movie → Show
+
+**Relationship:** One-to-Many (1:N)
+
+One movie can have multiple scheduled shows.
+
+Each show belongs to exactly one movie.
+
+```text
+Movie 1 ─── N Show
+```
+
+### 4.4 Screen → Show
+
+**Relationship:** One-to-Many (1:N)
+
+One screen can host multiple shows at different times.
+
+Each show takes place on exactly one screen.
+
+```text
+Screen 1 ─── N Show
+```
+
+### 4.5 User → Booking
+
+**Relationship:** One-to-Many (1:N)
+
+A user can create multiple bookings.
+
+This relationship will be implemented in a future version.
+
+```text
+User 1 ─── N Booking
+```
+
+### 4.6 Show → Booking
+
+**Relationship:** One-to-Many (1:N)
+
+A show can have multiple bookings.
+
+This relationship will be implemented in a future version.
+
+```text
+Show 1 ─── N Booking
+```
+
+### 4.7 Show ↔ Seat
+
+**Relationship:** Many-to-Many (N:N)
+
+Conceptually, a show and seats have a many-to-many relationship.
+
+A show can involve many seats, and the same physical seat can be associated with many shows over time.
+
+The relationship will require an intermediate design when booking and seat availability are implemented.
+
+```text
+Show N ─── N Seat
+```
+
+## 5. Relationship Summary
+
+| Relationship     | Type | Implementation             |
+| ---------------- | ---- | -------------------------- |
+| Theater → Screen | 1:N  | Foreign key                |
+| Screen → Seat    | 1:N  | Foreign key                |
+| Movie → Show     | 1:N  | Foreign key                |
+| Screen → Show    | 1:N  | Foreign key                |
+| User → Booking   | 1:N  | Future                     |
+| Show → Booking   | 1:N  | Future                     |
+| Show ↔ Seat      | N:N  | Future intermediate entity |
