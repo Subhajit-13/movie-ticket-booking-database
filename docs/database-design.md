@@ -161,3 +161,4 @@ Show N ─── N Seat
 | User → Booking   | 1:N  | Future                     |
 | Show → Booking   | 1:N  | Future                     |
 | Show ↔ Seat      | N:N  | Future intermediate entity |
+
