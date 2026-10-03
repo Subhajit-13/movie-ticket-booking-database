@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: movie_ticket_postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_DB: movie_ticket_db
+      POSTGRES_USER: movie_user
+      POSTGRES_PASSWORD: movie_password
+
+    ports:
+      - "5433:5432"
+
+    volumes:
+      - movie_ticket_postgres_data:/var/lib/postgresql
+
+volumes:
+  movie_ticket_postgres_data:
